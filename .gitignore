@@ -1,0 +1,10 @@
+# Secrets
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Fichiers système
+.DS_Store

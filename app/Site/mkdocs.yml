@@ -1,0 +1,13 @@
+# fichier de configuration, automatiquement rempli, permet de lier le CSS, les assets et d'articuler l'architecture générale du site.
+site_name: Site
+docs_dir: docs
+theme:
+  name: material
+  features:
+  - navigation.footer
+  logo: assets/logo.jpg
+nav:
+- Accueil: index.md
+- Visualisation: visualisation.md
+extra_css:
+- stylesheet/custom.css

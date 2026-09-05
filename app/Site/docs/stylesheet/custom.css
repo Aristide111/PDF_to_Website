@@ -1,0 +1,170 @@
+/* Couleurs de fond et de texte */
+:root, [data-md-color-scheme="default"] {
+    --md-default-bg-color: #ebdcb9;
+    --md-default-fg-color: #000000;
+}
+
+/* Couleur de fond et de texte du corps de la page */
+body, .md-container {
+    background-color: #ebdcb9 !important;
+    color: #000000 !important;
+}
+
+/* Élargit la grille principale */
+.md-grid {
+    max-width: 98% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+}
+
+/* Supprime la marge supérieure de la mise en page classique MkDocs */
+.md-main__inner {
+    margin-top: 0 !important;
+    padding-top: 0.5rem !important;
+}
+
+/* Définit des marges pour le contenu */
+.md-content {
+    max-width: 100% !important;
+    padding: 1rem 2rem !important;
+}
+
+/* Coluleur et mise en page centrée du bandeau supérieur */
+.md-header {
+    background-color: #37ad57 !important;
+    height: 14vh !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Étend le conteneur interne du bandeau sur toute sa largeur et sa hauteur */
+.md-header__inner {
+    height: 100% !important;
+    display: table !important;
+    width: 100% !important;
+    padding: 0 0.5rem !important;
+}
+
+/* Centre le titre horizontalement et verticalement dans le bandeau */
+.md-header__title {
+    display: table-cell !important;
+    vertical-align: middle !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
+/* Augmente la taille de la police et met en gras le titre du site */
+.md-header__topic {
+    font-size: 2rem !important;
+    font-weight: bold !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+
+/* Logo en grand format à gauche */
+.md-header__button.md-logo {
+    position: absolute !important;
+    left: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    z-index: 10 !important;
+}
+
+/* # Fixe la hauteur maximale de l'image ou du SVG du logo */
+.md-header__button.md-logo img, 
+.md-header__button.md-logo svg {
+    height: 12vh !important;
+    max-height: 120px !important;
+    width: auto !important;
+}
+
+/* # Positionne la barre de recherche à droite du bandeau */
+.md-search {
+    position: absolute !important;
+    right: 15px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 10 !important;
+}
+
+/* # Définit la couleur de fond, la largeur et le collage du sommaire de gauche */
+.md-sidebar--primary {
+    background-color: #393d7c !important;
+    width: 18rem !important;
+    position: sticky !important;
+    left: 0 !important;
+    top: 14vh !important;
+    height: calc(100vh - 14vh) !important;
+    padding: 0 !important;
+}
+
+/* # Met en forme le titre du sommaire (fond, couleur, taille) */
+.md-sidebar--primary .md-nav__title {
+    background-color: #393d7c !important;
+    color: #ffffff !important;
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+    padding: 1rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+}
+
+/* # Applique la couleur de fond à toutes les sections imbriquées du sommaire */
+.md-sidebar--primary .md-nav {
+    background-color: #393d7c !important;
+}
+
+/* # Définit la couleur et la taille de police des liens du sommaire */
+.md-sidebar--primary .md-nav__link {
+    color: #ffffff !important;
+    font-size: 1.1rem !important;
+    padding: 0.5rem 1rem !important;
+}
+
+/* # Change la couleur des liens au survol et pour l'élément actif */
+.md-sidebar--primary .md-nav__link:hover,
+.md-sidebar--primary .md-nav__link--active {
+    color: #37ad57 !important;
+    font-weight: bold !important;
+}
+
+/* # Augmente la taille de la police et améliore la lisibilité du texte principal */
+.md-typeset {
+    font-size: 1.35rem !important;
+    line-height: 1.6 !important;
+    color: #000000 !important;
+    font-family: "Georgia", "Times New Roman", serif !important;
+}
+
+/* # Agrandit et souligne les titres de niveau 1 */
+.md-typeset h1 {
+    font-size: 2.4rem !important;
+    font-weight: 800 !important;
+    color: #000000 !important;
+    border-bottom: 2px solid #000000 !important;
+    padding-bottom: 0.3rem !important;
+    margin-top: 0.5rem !important;
+}
+
+/* # Met en forme les titres de niveau 2 avec un soulignement fin */
+.md-typeset h2 {
+    font-size: 1.8rem !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    border-bottom: 1px solid #666666 !important;
+}
+
+/* # Met en gras et en noir les titres de niveau 3 et 4 */
+.md-typeset h3, .md-typeset h4 {
+    color: #000000 !important;
+    font-weight: 700 !important;
+}
+
+/* # Justifie le texte des paragraphes et des listes */
+.md-typeset p, .md-typeset li {
+    color: #000000 !important;
+    text-align: justify !important;
+}
