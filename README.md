@@ -1,4 +1,4 @@
-# PANEEL — Program for Archival Newspaper Exploration and Entity Localization
+# PANEEL : Program for Archival Newspaper Exploration and Entity Localization
 
 # Français
 
@@ -119,7 +119,7 @@ Cette adresse peut également être affichée directement dans le terminal lors 
 ---
 
 
-# PANEEL: Program for Archival Newspaper Exploration and Entity Localization
+# PANEEL : Program for Archival Newspaper Exploration and Entity Localization
 
 ---
 
