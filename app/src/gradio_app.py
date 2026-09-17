@@ -135,7 +135,7 @@ def build_interface():
                 with gr.Accordion("READ_ME", open=True):
                     gr.Markdown(
                         """
-                        Bonjour et bienvenue sur Pdf to >ebsite (Program for Archival Newspaper Exploration and Entity Localization).
+                        Bonjour et bienvenue sur Pdf to Website (Program for Archival Newspaper Exploration and Entity Localization).
 
                         Cet outil vous permet d'OCRiser vos documents, d'en extraire les images et de les transformer en site web.
                         Vous pourrez ensuite effectuer des recherches en texte intégral dans votre corpus mais aussi opérer des tâches de reconnaissance d'entités nommées.
