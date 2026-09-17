@@ -83,7 +83,7 @@ body, .gradio-container {
 
 def build_interface():
     
-    with gr.Blocks(title="PANEEL : ") as demo:
+    with gr.Blocks(title="Pdf_to_website : ") as demo:
 
         with gr.Row(elem_id="header-row"):
             with gr.Column(scale=1, min_width=100, elem_id="logo-box"):
@@ -135,7 +135,7 @@ def build_interface():
                 with gr.Accordion("READ_ME", open=True):
                     gr.Markdown(
                         """
-                        Bonjour et bienvenue sur PANEEL (Program for Archival Newspaper Exploration and Entity Localization).
+                        Bonjour et bienvenue sur Pdf to >ebsite (Program for Archival Newspaper Exploration and Entity Localization).
 
                         Cet outil vous permet d'OCRiser vos documents, d'en extraire les images et de les transformer en site web.
                         Vous pourrez ensuite effectuer des recherches en texte intégral dans votre corpus mais aussi opérer des tâches de reconnaissance d'entités nommées.
@@ -227,7 +227,7 @@ def build_interface():
                 f"""
                 **Avertissement / Warning**  
                 **FR :** {WARNING['fr']}  
-                **EN :** {WARNING['eng']}
+                **EN :** {WARNING['en']}
                 """
             )
 

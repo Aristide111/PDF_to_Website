@@ -77,7 +77,7 @@ WARNING = {
         "Ces ressources sont destinées à un usage scientifique contrôlé ; nous vous "
         "invitons à vérifier vos sources avant toute utilisation."
     ),
-    "eng": (
+    "en": (
         "The OCR, image extraction, page layout, and named entity recognition applied to "
         "these documents were automatically generated using the Mistral OCR API. As a "
         "result, transcription errors, hallucinations, and biases may persist. We draw your "
