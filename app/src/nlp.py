@@ -18,15 +18,14 @@ from src.ocr import api_key, client
 
 # Reconnaissance d'entité nommée et création des datavisualisation
 
-# Prompt pour MISTRAL et configuration des parametres de ce dernier
-
+# Prompt pour MISTRAL et configuration des de la sortie, avec les types personnes organisation evenements et place. 
 
 tools = [
     {
         "type": "function",
         "function": {
             "name": "extract_entities",
-            "description": "Extrait les entités nommées du texte.",
+            "description": "Extrait les entités nommées du texte (personnes, organisations, évènements et lieux).",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -55,8 +54,9 @@ tools = [
 corpus = list(path_page.rglob("*.md"))
 results = []
 
-
-# Evite l'erreur 429 en ajoutant un délai exponentiel (backoff)
+""" 
+# Evite l'erreur 429 en ajoutant un délai exponentiel (backoff). 
+# Ce bloc n'est plus nécessaire, il c'est avéré que l'erreur 429 était produite par la limitation de l'API gratuite de Mistral depuis l'été 2026
 
 def call_with_retry(func, max_retries=5):
     
@@ -71,6 +71,8 @@ def call_with_retry(func, max_retries=5):
             wait = (2 ** attempt) + random.uniform(0, 1)
             print(f"Débit limité (rate limit), nouvelle tentative dans {wait:.1f}s (essai {attempt + 1}/{max_retries})")
             time.sleep(wait)
+"""
+
 
 # Extraction d'entité nommée sur le corpus via le formulaire d'interrogation de l'API
 # On applique cette opération sur tout le corpus de document markdown
@@ -140,10 +142,10 @@ TYPE_LABELS = {
     "PLACE": "Lieux",
 }
 TYPE_COLORS = {
-    "PERS": "#4C72B0",
-    "ORG": "#DD8452",
-    "EVENT": "#55A868",
-    "PLACE": "#C44E52",
+    "PERS": "#36AD58",
+    "ORG": "#3B3D7B",
+    "EVENT": "#ee8a76",
+    "PLACE": "#ccda56",
 }
 
 # Extraction du nom du pdf et de l'index de page correspondant
@@ -157,6 +159,7 @@ def _parse_location(filename):
 
 # Génération de la datavisualisation en prenant les 30 entités pour éviter un graphique illisible
 # Crée la page Markdown qui liste les occurences avec les liens
+
 def graph(detection):
    
     rows = []
@@ -182,12 +185,12 @@ def graph(detection):
         print("Aucune entité exploitable après nettoyage.")
         return
 
-  
+  # comptage du nombre d'entités, du total, du type majoritairement associé (permet de prendre en compte en cas de termes polysémiques) et enfin le plus fréquent pour la limitation à 30
     counts = df_entities.groupby(['word', 'type']).size().reset_index(name='count')
     totals = df_entities.groupby('word').size().reset_index(name='total')
     dominant = counts.loc[counts.groupby('word')['count'].idxmax(), ['word', 'type']]
     merged = totals.merge(dominant, on='word').sort_values('total', ascending=False).head(30)
-
+# attribution de couleurs par type et couleur grise si type inconnu
     colors = merged['type'].map(TYPE_COLORS).fillna("#888888")
 
     plt.figure(figsize=(15, 10))
@@ -195,8 +198,8 @@ def graph(detection):
     plt.xticks(rotation=60, ha='right')
     plt.xlabel("Entité")
     plt.ylabel("Nombre d'occurrences")
-    plt.title("Top 30 des entités les plus fréquentes dans votre corpus")
-
+    plt.title("Entités les plus récurentes")
+# rectangle coloré pour la légende
     legend_elements = [
         Patch(facecolor=TYPE_COLORS[t], label=TYPE_LABELS[t])
         for t in TYPE_LABELS if t in merged['type'].values
@@ -204,7 +207,7 @@ def graph(detection):
     plt.legend(handles=legend_elements, title="Type d'entité")
     plt.tight_layout()
 
-    # Sauvegarde physique de l'image du graphique
+    # Sauvegarde de l'image du graphique
     path_viz_img = path_img / "visualisation"
     path_viz_img.mkdir(parents=True, exist_ok=True)
     img_path = path_viz_img / "frequence_entites.png"
@@ -213,6 +216,7 @@ def graph(detection):
     print(f"Graphique enregistré sous '{img_path}'")
 
     # --- Génération de la page Markdown de visualisation ---
+    
     lines = [
         "# Visualisation des entités nommées\n",
         "![Fréquence des entités](img/visualisation/frequence_entites.png)\n",
@@ -220,10 +224,11 @@ def graph(detection):
         "| Entité | Type | Emplacement |",
         "|---|---|---|",
     ]
-
+# tri par ordre alphabétique pour rendr eplus visible 
     df_sorted = df_entities.sort_values(['type', 'word'])
     for _, row in df_sorted.iterrows():
         pdf_stem, page_index = _parse_location(row['file'])
+    # si l'entité est viable, on ajoute un lien vers son origine, sinon seulement son nom
         if pdf_stem is not None:
             link = f"page/{pdf_stem}/{row['file']}"
             emplacement = f"[{pdf_stem} — page {page_index + 1}]({link})"

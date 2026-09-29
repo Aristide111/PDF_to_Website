@@ -72,32 +72,52 @@ def run_ocr_and_build(files, clean_site, progress=gr.Progress()):
             gr.update(visible=False),
         )
 
-    progress(0, desc="Configuration des dossiers...")
+    # Préparation
+    progress(0.0, desc="Configuration des dossiers...")
 
     if clean_site:
         clean_generated_content_only()
 
+    # Nettoyage et création du dossier Input
+    progress(0.1, desc="Préparation des fichiers...")
 
     if Input.exists():
         shutil.rmtree(Input)
+
     Input.mkdir(parents=True, exist_ok=True)
 
-    for file_obj in files:
+    # Copie des fichiers PDF
+    total_files = len(files)
+
+    for i, file_obj in enumerate(files):
         file_path = p(file_obj.name)
         shutil.copy(file_path, Input / file_path.name)
 
-    progress(0.3, desc="Création de l'arborescence des dossiers...")
+        progress(
+            0.1 + (0.1 * (i + 1) / total_files),
+            desc=f"Copie du fichier {i + 1}/{total_files}..."
+        )
+
+    # Création de l'arborescence
+    progress(0.2, desc="Création de l'arborescence des dossiers...")
     architecture(Input)
 
-    progress(0.5, desc="Exécution de l'OCR via l'API Mistral...")
+    # OCR
+    progress(0.25, desc="Exécution de l'OCR via l'API Mistral...")
+
     results_ocr = OCR(Input)
 
-    progress(0.8, desc="Génération des pages Markdown...")
+    progress(0.75, desc="OCR terminé.")
+
+    # Création des fichiers Markdown
+    progress(0.80, desc="Génération des pages Markdown...")
     create_markdown_file(results_ocr)
 
-    progress(0.95, desc="Mise à jour de la navigation MkDocs...")
+    # Construction du site MkDocs
+    progress(0.90, desc="Mise à jour de la navigation MkDocs...")
     build_mkdocs_site(results_ocr)
 
+    # Fin
     progress(1.0, desc="Terminé !")
 
     return (
@@ -105,14 +125,21 @@ def run_ocr_and_build(files, clean_site, progress=gr.Progress()):
         gr.update(visible=False),
     )
 
+
 # NER et datavisualisation
 
 def run_ner_pipeline(progress=gr.Progress()):
     
     if not path_site.exists():
-        return "Aucun site généré pour le moment. Lancez d'abord la transformation.", None
+        return (
+            "Aucun site généré pour le moment. Lancez d'abord la transformation.",
+            None,
+        )
 
-    progress(0.2, desc="Extraction des entités avec Mistral...")
+    # Extraction des entités
+    progress(0.0, desc="Préparation de l'extraction des entités...")
+
+    progress(0.1, desc="Extraction des entités avec Mistral...")
     extracted_data = extract_entities()
 
     progress(0.8, desc="Génération du graphique de datavisualisation...")
@@ -120,8 +147,17 @@ def run_ner_pipeline(progress=gr.Progress()):
 
     progress(1.0, desc="Extraction NER terminée !")
 
-    dataviz_export = str(PATH_DATAVIZ_IMG) if PATH_DATAVIZ_IMG.exists() else None
-    return "Extraction des entités et génération de la datavisualisation réussies !", dataviz_export
+    dataviz_export = (
+        str(PATH_DATAVIZ_IMG)
+        if PATH_DATAVIZ_IMG.exists()
+        else None
+    )
+
+    return (
+        "Extraction des entités et génération de la datavisualisation réussies !",
+        dataviz_export,
+    )
+
 
 # Démarre un serveur local MkDocs et ouvre automatiquement le navigateur web.
 # en vérifiant si le port 8000 est déjà utilisé

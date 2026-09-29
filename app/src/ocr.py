@@ -20,21 +20,37 @@ client = Mistral(api_key=api_key)
 # Ajout d'un score de confidence et supression des documents une fois traités
 # Stockage de la data dans le dictionnaire result
 
-def OCR(folder):
+def OCR(folder, progress=None):
     result = {}
-    pdf_files = list(folder.glob("*.pdf")) 
-    for file in tqdm(pdf_files, desc="Transfert des PDF complets à Mistral pour OCR..."):
+    pdf_files = list(folder.glob("*.pdf"))
+
+    total_files = len(pdf_files)
+
+    for i, file in enumerate(pdf_files):
+
+        # MAJ pour améliorer l'affichage de la progression dans l'app gradio
+        if progress:
+            progress(
+                i / total_files,
+                desc=f"OCR du fichier {i + 1}/{total_files} : {file.name}"
+            )
+
+        # Transfert du PDF complet à Mistral pour OCR
         uploaded_pdf = client.files.upload(
             file={
                 "fileName": file.name,
                 "content": open(file, "rb"),
             },
-            purpose="ocr")
-        
+            purpose="ocr"
+        )
+
         time.sleep(1)
 
-        signed_url = client.files.get_signed_url(file_id=uploaded_pdf.id)
+        signed_url = client.files.get_signed_url(
+            file_id=uploaded_pdf.id
+        )
 
+        # Exécution de l'OCR
         ocr_response = client.ocr.process(
             model="mistral-ocr-latest",
             document={
@@ -47,14 +63,22 @@ def OCR(folder):
         )
 
         result[file.stem] = {
-            "ocr": ocr_response,  
-            "update": "no",       
+            "ocr": ocr_response,
+            "update": "no",
         }
 
-        
-        
+        # Suppression du fichier temporaire des serveurs Mistral
         client.files.delete(file_id=uploaded_pdf.id)
+
         print(f"{file.name} : supprimé des serveurs Mistral")
 
+        # Mise à jour de la progression après le traitement du fichier
+        if progress:
+            progress(
+                (i + 1) / total_files,
+                desc=f"OCR terminé : {file.name}"
+            )
+
     return result
+
 

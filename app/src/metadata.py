@@ -34,27 +34,27 @@ DUBLIN_CORE_METADATA = {
 
 
 DUBLIN_CORE_LABELS = {
-    "title": "Title ((Titre) (! Le titre sera appliqué à l'ensemble des documents, chaque document aura un numéro attribué. Exemple : Titre 01, Titre 02 etc.)",
+    "title": "Title (Titre) Le titre sera appliqué à l'ensemble des documents, chaque document aura un numéro attribué. Exemple : Titre 01, Titre 02 etc.",
     "creator": "Creator (Auteur)",
     "subject": "Subject (Sujet)",
     "description": "Description (Description)",
     "publisher": "Publisher (Éditeur)",
     "contributor": "Contributor (Contributeur)",
-    "date": "Date (AAAA-MM-JJ, (! Si le champ est laissé vide, la date est appliquée automatiquement !) )",
-    "type": "Type",
-    "format": "Format",
-    "identifier": "Identifier ( Comme pour le titre, un identifiant est généré automatiquement ( exemple : 12301, 12302, 12303 etc. ) ! Si le champ est laissé vide, un identifiant est généré aléatoirement.)",
-    "source": "Source",
+    "date": "Date (Date) Si le champ est laissé vide, la date est appliquée automatiquement ! )",
+    "type": "Type (Type)",
+    "format": "Format (Format)",
+    "identifier": "Identifier (Identifiant) Comme pour le titre, un identifiant est généré automatiquement ( exemple : 12301, 12302, 12303 etc. ) ! Si le champ est laissé vide, un identifiant est généré aléatoirement.)",
+    "source": "Source (Source)",
     "language": "Language (Langue)",
-    "relation": "Relation",
+    "relation": "Relation (Relation)",
     "coverage": "Coverage (Couverture)",
     "rights": "Rights (Droits)",
 }
 
 # Balises de repérage  pour le bloc d'en-tête (head) des pages.
 
-_BLOCK_START = "<!-- METADATA_BLOCK_START -->"
-_BLOCK_END = "<!-- METADATA_BLOCK_END -->"
+_BLOCK_START = "<!-- début des métadonnées -->"
+_BLOCK_END = "<!-- fin des métadonnées -->"
 _HEADER_RE = re.compile(re.escape(_BLOCK_START) + r".*?" + re.escape(_BLOCK_END) + r"\n*", re.DOTALL)
 
 ## Récupère le nom (stem) et le numéro de page à partir du nom du fichier 
@@ -94,7 +94,8 @@ def update_metadata(**values) -> None:
         if key in DUBLIN_CORE_METADATA:
             DUBLIN_CORE_METADATA[key] = (value or "").strip()
 
-# Construction du header des métadonnées. 
+# Construction du header des métadonnées à partir des données renseignées par l'utilisateur
+
 def build_header(pdf_stem: str, page_index: int, seq: int = 1) -> str:
     
     base_title = DUBLIN_CORE_METADATA["title"]

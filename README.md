@@ -4,11 +4,13 @@
 
 ## Présentation
 
-PDF to Website est une application destinée à transformer des fonds de presse numérisés en contenus web statiques, structurés et exploitables.
+VELMA Visualization, Extraction, Linguistic analysis and Metadata for Archives documents est une application destinée à transformer des fonds de presse numérisés en contenus web statiques, structurés et exploitables.
+
+Cette application à été crée pour la Maison de la Fondation de l'Ecologie Politique afin de permettre la mise en valeur de leurs fonds dans le cadre d'un stage de fin d'études du master TNAH de l'Ecole Nationale des Chartes.
 
 Elle a pour objectif de faciliter le traitement des collections de presse historique en automatisant plusieurs fonctionnalités, dont l'OCR, l'extraction d'images, la recherche plein texte, la reconnaissance d'entités nommées et l'ajout de métadonnées au format Dublin Core.
 
-PDF to Website combine des méthodes de vision par ordinateur et l'API Mistral OCR pour le traitement des documents et l'extraction de leur contenu textuel. Les sites web créés sont statiques et utilisent la technologie MkDocs.
+VELMA Visualization, Extraction, Linguistic analysis and Metadata for Archives documents combine des méthodes de vision par ordinateur et l'API Mistral OCR pour le traitement des documents et l'extraction de leur contenu textuel. Les sites web créés sont statiques et utilisent la technologie MkDocs.
 
 L'objectif est de proposer une première lecture de grands volumes de documents.
 
@@ -37,6 +39,7 @@ Les résultats produits ne se substituent cependant pas à une véritable recher
 ├── app
 │   ├── PDF # Dossier ou placer vos PDF
 │   ├── run.py # Fichier de lancement de l'application
+│   ├── .env # Emplacement de l'API KEY ! A ne jamais communiquer !
 │   ├── Site # Site généré
 │   │   ├── docs 
 │   │   │   ├── assets
@@ -66,7 +69,7 @@ Les résultats produits ne se substituent cependant pas à une véritable recher
 
 ## Prérequis
 
-PDF to Website nécessite :
+VELMA Visualization, Extraction, Linguistic analysis and Metadata for Archives documents nécessite :
 
 * **Python 3.10 ou supérieur**
 * Une connexion Internet pour accéder à l'API Mistral OCR
@@ -77,7 +80,7 @@ PDF to Website nécessite :
 ### 1. Se rendre dans le dossier du projet
 
 ```cmd
-cd chemin\vers\PDF to Website
+cd chemin\vers\VELMA Visualization, Extraction, Linguistic analysis and Metadata for Archives documents
 ```
 
 ### 2. Créer un environnement virtuel
@@ -100,7 +103,7 @@ pip install -r requirements.txt
 
 ---
 
-# Lancement de PDF to Website
+# Lancement de VELMA Visualization, Extraction, Linguistic analysis and Metadata for Archives documents
 
 Une fois l'environnement virtuel activé et les dépendances installées, lancer l'application avec :
 
@@ -119,7 +122,7 @@ Cette adresse peut également être affichée directement dans le terminal lors 
 ---
 
 
-# PDF to Website : Program for Archival Newspaper Exploration and Entity Localization
+# VELMA Visualization, Extraction, Linguistic analysis and Metadata for Archives documents : 
 
 ---
 
@@ -127,11 +130,11 @@ Cette adresse peut également être affichée directement dans le terminal lors 
 
 ## Overview
 
-PDF to Website is an application designed to transform digitized press collections into static, structured, and usable web content.
+VELMA Visualization, Extraction, Linguistic analysis and Metadata for Archives documents is an application designed to transform digitized press collections into static, structured, and usable web content.
 
 Its goal is to facilitate the processing of historical press collections by automating several features, including OCR, image extraction, full-text search, named entity recognition, and the addition of Dublin Core metadata.
 
-PDF to Website combines computer vision methods and the Mistral OCR API for document processing and text content extraction. The websites created are static and use MkDocs technology.
+VELMA Visualization, Extraction, Linguistic analysis and Metadata for Archives documents combines computer vision methods and the Mistral OCR API for document processing and text content extraction. The websites created are static and use MkDocs technology.
 
 The objective is to offer a preliminary reading of large volumes of documents.
 
@@ -188,7 +191,7 @@ However, the results produced do not substitute for genuine scientific research 
 
 ## Prerequisites
 
-PDF to Website requires:
+VELMA Visualization, Extraction, Linguistic analysis and Metadata for Archives documents requires:
 
 * **Python 3.10 or higher**
 * An Internet connection to access the Mistral OCR API
@@ -199,7 +202,7 @@ PDF to Website requires:
 ### 1. Navigate to the project folder
 
 ```cmd
-cd path\to\PDF to Website
+cd path\to\VELMA Visualization, Extraction, Linguistic analysis and Metadata for Archives documents
 
 ```
 
@@ -226,7 +229,7 @@ pip install -r requirements.txt
 
 ---
 
-# Launching PDF to Website
+# Launching VELMA Visualization, Extraction, Linguistic analysis and Metadata for Archives documents
 
 Once the virtual environment is activated and dependencies are installed, launch the application with:
 
