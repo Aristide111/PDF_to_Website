@@ -72,13 +72,13 @@ def run_ocr_and_build(files, clean_site, progress=gr.Progress()):
             gr.update(visible=False),
         )
 
-    # Préparation
+  
     progress(0.0, desc="Configuration des dossiers...")
 
     if clean_site:
         clean_generated_content_only()
 
-    # Nettoyage et création du dossier Input
+ 
     progress(0.1, desc="Préparation des fichiers...")
 
     if Input.exists():

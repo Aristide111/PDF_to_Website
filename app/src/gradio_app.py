@@ -12,20 +12,29 @@ from src.pipeline import (
 from src.metadata import DUBLIN_CORE_METADATA, DUBLIN_CORE_LABELS, WARNING
 
 
-# Configuration de l'application Gradio
+# application Gradio
 
-# Chargement du CSS personnalisé depuis un fichier externe
-CSS_CUSTOM = (Path(__file__).parent / "custom_gradio.css").read_text(encoding="utf-8")
+# CSS
+CSS_CUSTOM = (
+    Path(__file__).parent / "custom_gradio.css"
+).read_text(
+    encoding="utf-8"
+)
 
 
-# Construction de l'interface graphique
+# Application gradio
 
 def build_interface():
 
-    with gr.Blocks(title="Pdf_to_website : ") as demo:
+    # création de l'application Gradio
+    with gr.Blocks(
+        title="Pdf_to_website : "
+    ) as demo:
 
-        # En-tête de l'application
-        with gr.Row(elem_id="header-row"):
+        # titre de l'application
+        with gr.Row(
+            elem_id="header-row"
+        ):
 
             with gr.Column(scale=12):
                 gr.Markdown(
@@ -33,16 +42,17 @@ def build_interface():
                     elem_id="main-title"
                 )
 
-
-        # Zone principale de traitement des documents
+        # zone principale pour importer et traiter les documents
         with gr.Row():
 
-            # Téléversement des PDF et lancement des traitements
+            # zone d'import des PDF et boutons de traitement
             with gr.Column(scale=6):
 
                 with gr.Row():
 
                     with gr.Column(scale=3):
+
+                        # permet d'importer plusieurs fichiers PDF
                         pdf_input = gr.File(
                             label="Explore",
                             file_count="multiple",
@@ -51,20 +61,23 @@ def build_interface():
                         )
 
                     with gr.Column(scale=7):
+
+                        # affiche les fichiers sélectionnés
                         pdf_preview = gr.File(
                             label="Aperçu des fichiers",
                             interactive=False,
                             elem_classes=["bordered-box"],
                         )
 
-                # Mise à jour de l'aperçu lorsque les fichiers sont ajoutés
+                # met à jour l'aperçu dès qu'un fichier est ajouté
+                # reprend simplement les fichiers présents dans la zone d'import
                 pdf_input.change(
                     fn=lambda files: files,
                     inputs=[pdf_input],
                     outputs=[pdf_preview]
                 )
 
-                # Boutons principaux de traitement et d'analyse
+                # boutons pour lancer la transformation et l'extraction NER
                 with gr.Row():
 
                     btn_transform = gr.Button(
@@ -79,7 +92,8 @@ def build_interface():
                         size="lg"
                     )
 
-                # Confirmation nécessaire lorsqu'un site existe déjà
+                # zone cachée affichée uniquement si un site existe déjà
+                # permet de choisir entre supprimer l'ancien site ou le conserver
                 with gr.Column(
                     visible=False,
                     elem_id="confirm-box"
@@ -91,23 +105,27 @@ def build_interface():
 
                     with gr.Row():
 
+                        # supprime l'ancien site avant de relancer le traitement
                         btn_confirm_yes = gr.Button(
                             "Oui, réinitialiser",
                             variant="stop"
                         )
 
+                        # garde l'ancien site et continue le traitement
                         btn_confirm_no = gr.Button(
                             "Non, conserver",
                             variant="secondary"
                         )
 
-            # Guide d'utilisation
+            # zone contenant le guide d'utilisation
             with gr.Column(
                 scale=4,
                 elem_classes=["bordered-box"]
             ):
 
                 with gr.Accordion():
+
+                    # affiche les informations sur le fonctionnement de l'application
                     gr.Markdown(
                         """
                         Bonjour et bienvenue sur **VELMA** _Visualization, Extraction, Linguistic analysis and Metadata for Archives documents_.
@@ -138,7 +156,7 @@ def build_interface():
                         """
                     )
 
-        # Formulaire de saisie des métadonnées Dublin Core
+        # formulaire pour renseigner les métadonnées Dublin Core
         with gr.Row():
 
             with gr.Column(
@@ -151,6 +169,7 @@ def build_interface():
                     open=False
                 ):
 
+                    # explique où les métadonnées seront ajoutées
                     gr.Markdown(
                         "Ces valeurs sont écrites dans l'en-tête de chaque page Markdown générée. "
                         "Modifiez-les et cliquez sur **Sauvegarder & appliquer** pour les appliquer à toutes les pages existantes."
@@ -158,13 +177,22 @@ def build_interface():
 
                     meta_inputs = {}
 
-                    keys = list(DUBLIN_CORE_METADATA.keys())
-                    half = (len(keys) + 1) // 2
+                    # récupération des différents champs Dublin Core
+                    keys = list(
+                        DUBLIN_CORE_METADATA.keys()
+                    )
 
-                    # Organisation des champs de métadonnées en deux colonnes
+                    # séparation des champs en deux groupes
+                    # permet de les afficher dans deux colonnes
+                    half = (
+                        len(keys) + 1
+                    ) // 2
+
                     with gr.Row():
 
                         with gr.Column():
+
+                            # création des champs de la première colonne
                             for key in keys[:half]:
                                 meta_inputs[key] = gr.Textbox(
                                     label=DUBLIN_CORE_LABELS[key],
@@ -172,26 +200,32 @@ def build_interface():
                                 )
 
                         with gr.Column():
+
+                            # création des champs de la deuxième colonne
                             for key in keys[half:]:
                                 meta_inputs[key] = gr.Textbox(
                                     label=DUBLIN_CORE_LABELS[key],
                                     value=DUBLIN_CORE_METADATA[key],
                                 )
 
+                    # bouton pour sauvegarder et appliquer les métadonnées
                     btn_save_meta = gr.Button(
                         "Sauvegarder & appliquer à chaque document",
                         variant="primary"
                     )
 
+                    # affiche le résultat de l'application des métadonnées
                     meta_status = gr.Textbox(
                         show_label=False,
                         interactive=False
                     )
 
-        # Suivi de l'exécution et gestion des exports
+        # zone de suivi du traitement et des exports
         with gr.Row():
 
             with gr.Column(scale=6):
+
+                # affiche l'avancement des différents traitements
                 status_output = gr.Textbox(
                     label="PROGRESSION",
                     placeholder="Statut de l'exécution...",
@@ -199,7 +233,11 @@ def build_interface():
                 )
 
             with gr.Column(scale=3):
-                btn_deploy = gr.Button("DÉPLOYER")
+
+                # lance le déploiement du site
+                btn_deploy = gr.Button(
+                    "DÉPLOYER"
+                )
 
                 deploy_status = gr.Textbox(
                     show_label=False,
@@ -207,14 +245,19 @@ def build_interface():
                 )
 
             with gr.Column(scale=3):
-                btn_save = gr.Button("Sauvegarder le site")
 
+                # crée une archive du site
+                btn_save = gr.Button(
+                    "Sauvegarder le site"
+                )
+
+                # fichier ZIP généré par la sauvegarde
                 site_zip_output = gr.File(
                     label="Télécharger le site",
                     interactive=False
                 )
 
-        # Export de la visualisation des entités nommées
+        # zone d'export de la visualisation des entités
         with gr.Row():
 
             with gr.Column(
@@ -222,13 +265,16 @@ def build_interface():
                 elem_classes=["bordered-box"]
             ):
 
+                # permet de télécharger le résultat de la datavisualisation
                 export_dataviz = gr.File(
                     label="Télécharger la datavisualisation",
                     interactive=False,
                 )
 
-        # Avertissement concernant le traitement automatique des documents
-        with gr.Row(elem_id="warning-footer-row"):
+        # affichage de l'avertissement sur le traitement des documents
+        with gr.Row(
+            elem_id="warning-footer-row"
+        ):
 
             gr.Markdown(
                 f"""
@@ -238,76 +284,106 @@ def build_interface():
                 """
             )
 
-        # Informations sur le projet et liens associés
-        with gr.Row(elem_id="footer-row"):
+        # informations sur le projet et lien vers le dépôt Github
+        with gr.Row(
+            elem_id="footer-row"
+        ):
 
             gr.Markdown(
                 "Projet réalisé par Aristide Curtelin en 2026, dans le cadre de son stage au sein du consortium pictorIA et du projet TORNE-H."
                 "L'ensemble du projet est disponible sur Github : https://github.com/Aristide111 "
             )
 
-        # Connexion des composants de l'interface aux fonctions du pipeline
-
-        # Vérification de l'existence d'un site avant de lancer la transformation
+        # vérifie d'abord si un site existe avant de lancer le traitement
+        # si un site est trouvé ==> affiche la demande de confirmation
         btn_transform.click(
             fn=check_existing_site,
             inputs=[pdf_input],
-            outputs=[status_output, confirm_group],
+            outputs=[
+                status_output,
+                confirm_group
+            ],
         )
 
-        # Suppression de l'ancien site et lancement du traitement
+        # supprime l'ancien site puis lance le traitement OCR
         btn_confirm_yes.click(
             fn=lambda files: run_ocr_and_build(
                 files,
                 clean_site=True
             ),
             inputs=[pdf_input],
-            outputs=[status_output, confirm_group],
+            outputs=[
+                status_output,
+                confirm_group
+            ],
         )
 
-        # Conservation de l'ancien site et lancement du traitement
+        # garde l'ancien site puis lance le traitement OCR
         btn_confirm_no.click(
             fn=lambda files: run_ocr_and_build(
                 files,
                 clean_site=False
             ),
             inputs=[pdf_input],
-            outputs=[status_output, confirm_group],
+            outputs=[
+                status_output,
+                confirm_group
+            ],
         )
 
-        # Lancement de l'extraction des entités nommées
+        # lance l'extraction des entités nommées
+        # génère ensuite la visualisation correspondante
         btn_ner.click(
             fn=run_ner_pipeline,
             inputs=[],
-            outputs=[status_output, export_dataviz],
+            outputs=[
+                status_output,
+                export_dataviz
+            ],
         )
 
-        # Sauvegarde et application des métadonnées à tous les documents
+        # récupère les valeurs saisies dans les champs Dublin Core
+        # applique les métadonnées à tous les documents existants
         btn_save_meta.click(
             fn=save_and_apply_metadata,
-            inputs=[meta_inputs[k] for k in keys],
+            inputs=[
+                meta_inputs[k]
+                for k in keys
+            ],
             outputs=[meta_status],
         )
 
-        # Déploiement du site généré
+        # lance le déploiement du site généré
         btn_deploy.click(
             fn=deploy_site,
             inputs=[],
             outputs=[deploy_status],
         )
 
-        # Création d'une archive du site
+        # crée une archive ZIP du site
+        # permet ensuite de récupérer le site complet
         btn_save.click(
             fn=save_website_archive,
             inputs=[],
-            outputs=[site_zip_output, status_output],
+            outputs=[
+                site_zip_output,
+                status_output
+            ],
         )
 
     return demo
 
 
-# Lancement de l'application
+# lance l'application Gradio
+# construit d'abord l'interface puis démarre le serveur
+# applique le CSS personnalisé au lancement
 
 def launch_app():
+
+    # création de l'interface
     demo = build_interface()
-    demo.launch(css=CSS_CUSTOM)
+
+    # lancement de Gradio avec le CSS personnalisé
+    demo.launch(
+        css=CSS_CUSTOM
+    )

@@ -54,9 +54,8 @@ tools = [
 corpus = list(path_page.rglob("*.md"))
 results = []
 
-""" 
 # Evite l'erreur 429 en ajoutant un délai exponentiel (backoff). 
-# Ce bloc n'est plus nécessaire, il c'est avéré que l'erreur 429 était produite par la limitation de l'API gratuite de Mistral depuis l'été 2026
+# Ce bloc n'est plus nécessaire, il c'est avéré que l'erreur 429 était produite par la limitation de l'API gratuite de Mistral depuis l'été 2026, mais il peut être utile en cas de dépassement des quotats 
 
 def call_with_retry(func, max_retries=5):
     
@@ -71,7 +70,7 @@ def call_with_retry(func, max_retries=5):
             wait = (2 ** attempt) + random.uniform(0, 1)
             print(f"Débit limité (rate limit), nouvelle tentative dans {wait:.1f}s (essai {attempt + 1}/{max_retries})")
             time.sleep(wait)
-"""
+
 
 
 # Extraction d'entité nommée sur le corpus via le formulaire d'interrogation de l'API
@@ -215,7 +214,7 @@ def graph(detection):
     plt.close()
     print(f"Graphique enregistré sous '{img_path}'")
 
-    # --- Génération de la page Markdown de visualisation ---
+    # Génération de la page Markdown de visualisation
     
     lines = [
         "# Visualisation des entités nommées\n",
